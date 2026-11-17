@@ -181,11 +181,22 @@ const siteData = {
     nodes: i.nodes,
   })),
 };
+// Site assets: ottomind pixel font (inlined, so the page is one file) and the site mark.
+const ASSETS = join(SITE_DIR, 'assets');
+const pixelFont = readFileSync(join(ASSETS, 'ottomind-pixel.woff2')).toString('base64');
+const favicon = readFileSync(join(ASSETS, 'favicon.svg'), 'utf8').trim();
+const mark = JSON.parse(readFileSync(join(ASSETS, 'mark.json'), 'utf8'));
 const template = readFileSync(join(SITE_DIR, 'template.html'), 'utf8');
 write(
   join(SITE_DIR, 'dist/index.html'),
-  template.replace('/*__ICON_DATA__*/null', JSON.stringify(siteData).replace(/</g, '\\u003c')),
+  template
+    .replace('/*__ICON_DATA__*/null', () => JSON.stringify(siteData).replace(/</g, '\\u003c'))
+    .replace('__PIXEL_FONT__', () => pixelFont)
+    .replace('__FAVICON__', () => encodeURIComponent(favicon))
+    .replace('__MARK_CHERRY__', () => mark.cherry)
+    .replace('__MARK_MAIN__', () => mark.main),
 );
+copyFileSync(join(ASSETS, 'favicon.svg'), join(SITE_DIR, 'dist/favicon.svg'));
 copyFileSync(join(iconsDist, 'sprite.svg'), join(SITE_DIR, 'dist/sprite.svg'));
 copyFileSync(join(iconsDist, 'iconify.json'), join(SITE_DIR, 'dist/iconify.json'));
 

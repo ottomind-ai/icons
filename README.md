@@ -110,4 +110,4 @@ build, so any static host works too: build `npm ci && npm run build`, publish `s
 
 ## License
 
-MIT © ottomind
+MIT © ottomind. The ottomind pixel font and the site mark in `site/assets/` are ottomind brand assets and are not covered by the MIT licence.

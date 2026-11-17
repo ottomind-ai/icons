@@ -4,144 +4,236 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ottomind icons</title>
-<meta name="description" content="Open-source 16×16 pixel icons by ottomind. React components, SVG, sprite and Iconify.">
+<meta name="description" content="One-colour 16×16 pixel icons by ottomind. React components, SVG, sprite and Iconify. MIT.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,__FAVICON__">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  @font-face { font-family: ottomindPixel; src: url(data:font/woff2;base64,__PIXEL_FONT__) format("woff2"); font-display: swap; }
+
+  /* ottomind.ai tokens */
   :root {
-    --bg: #0a0a0b; --panel: #111113; --card: #141417; --line: #2e2e33; --line-soft: #232327;
-    --text: #edebe3; --muted: #8e8a82; --brand: #b3202a; --brand-hi: #cc5f65;
+    --om-void: #0a0a0b; --om-phosphor: #edebe3; --om-cherry: #b3202a; --om-cherry-text: #cc5f65;
+    --om-dim: #8e8a82; --om-surface: #111113; --om-rule: #2e2e33;
+    --om-paper: #f3f2ef; --om-ink: #0e0e0f; --om-paper-dim: #6b675f; --om-paper-rule: #dad8d2; --om-white: #fff;
+    --color-bg: var(--om-void); --color-fg: var(--om-phosphor); --text-muted: var(--om-dim);
+    --line: var(--om-rule); --line-strong: var(--om-dim); --surface: var(--om-surface);
+    --accent: var(--om-cherry); --accent-text: var(--om-cherry-text); --on-accent: var(--om-white);
+    --font-pixel: ottomindPixel; --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --text-ui: 10px; --text-body: 10px; --line-body: 20px; --text-title: 20px;
+    --display-m: 30px; --display-l: 50px;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-7: 32px; --space-8: 48px;
+    --blink: 1.06s; --content-width: 1200px;
     color-scheme: dark;
   }
-  @media (prefers-color-scheme: light) {
-    :root { --bg: #f3f2ef; --panel: #ffffff; --card: #ffffff; --line: #d9d6cf; --line-soft: #e6e3dd; --text: #141416; --muted: #6b675f; color-scheme: light; }
+  :root[data-theme=light] {
+    --color-bg: var(--om-paper); --color-fg: var(--om-ink); --text-muted: var(--om-paper-dim);
+    --line: var(--om-paper-rule); --line-strong: var(--om-paper-dim); --surface: var(--om-white);
+    --accent-text: var(--om-cherry); color-scheme: light;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; }
-  button, input { font: inherit; color: inherit; }
-  .mono, code { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
-  .lbl { font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
-  .btn { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; background: transparent; border: 1px solid var(--line); cursor: pointer; font: 500 12px/1 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .4px; }
-  .btn:hover { border-color: var(--muted); }
-  .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
-  .btn.primary:hover { background: #c42733; }
+  html { background: var(--color-bg); overflow-y: scroll; font-synthesis: none; }
+  body {
+    margin: 0; min-height: 100dvh; background: var(--color-bg); color: var(--color-fg);
+    font-family: var(--font-pixel), var(--font-mono); font-size: var(--text-body); line-height: var(--line-body);
+    text-transform: lowercase; -webkit-font-smoothing: none;
+  }
+  button, input { font: inherit; color: inherit; text-transform: inherit; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: var(--on-accent); }
+  .keep { text-transform: none; font-family: var(--font-mono); font-size: 13px; }
+  .muted { color: var(--text-muted); }
+  .stop { color: var(--accent); }
 
-  header { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 22px 28px; border-bottom: 1px solid var(--line-soft); }
-  .wordmark { font: 600 20px/1 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: -.02em; }
-  .wordmark b { color: var(--brand); }
-  header .meta { color: var(--muted); font-size: 13px; }
-  header .right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  /* ui kit (as on ottomind.ai) */
+  .ui-button { display: inline-flex; align-items: baseline; gap: .5em; padding: var(--space-1) 0; background: none; border: 0; cursor: pointer; white-space: nowrap; font-size: var(--text-ui); line-height: var(--line-body); color: var(--color-fg); }
+  .ui-button::before { content: "["; color: var(--text-muted); }
+  .ui-button::after { content: "]"; color: var(--text-muted); }
+  .ui-button:hover::before, .ui-button:hover::after, .ui-button--primary::before, .ui-button--primary::after { color: var(--accent-text); }
+  .ui-prompt::before { content: "> "; color: var(--accent-text); white-space: pre; }
+  .ui-cursor { display: inline-block; width: .6em; height: 1em; vertical-align: text-bottom; background: var(--accent); animation: blink var(--blink) step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .ui-cursor { animation: none; } }
 
-  .toolbar { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; padding: 12px 28px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line-soft); }
-  .toolbar input[type=search] { flex: 1 1 260px; min-width: 200px; height: 36px; background: var(--panel); border: 1px solid var(--line); padding: 0 12px; }
-  .seg { display: inline-flex; border: 1px solid var(--line); }
-  .seg button { height: 30px; min-width: 40px; border: 0; background: transparent; color: var(--muted); cursor: pointer; font: 500 12px "IBM Plex Mono", monospace; }
-  .seg button[aria-pressed=true] { background: var(--text); color: var(--bg); }
-  .toolbar label { display: inline-flex; align-items: center; gap: 8px; }
-  input[type=color] { width: 28px; height: 22px; border: 1px solid var(--line); padding: 0; background: none; cursor: pointer; }
+  /* pixel dust */
+  #dust { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .wrap { position: relative; z-index: 1; max-width: var(--content-width); margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px) var(--space-8); }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 28px 0; }
-  .chip { border: 1px solid var(--line); background: transparent; color: var(--muted); padding: 5px 10px; cursor: pointer; font: 500 11px/1 "IBM Plex Mono", monospace; letter-spacing: 1px; text-transform: uppercase; }
-  .chip[aria-pressed=true] { color: var(--text); border-color: var(--text); }
+  /* header */
+  header { display: flex; align-items: center; gap: var(--space-7); flex-wrap: wrap; padding: var(--space-6) 0; }
+  .brand { display: inline-flex; align-items: center; gap: var(--space-3); font-size: var(--text-title); line-height: 1; }
+  .brand svg { width: 32px; height: 32px; display: block; }
+  .brand .k { fill: var(--color-fg); }
+  nav.primary { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+  nav.primary a { color: var(--text-muted); }
+  nav.primary a:hover, nav.primary a[aria-current=page] { color: var(--color-fg); }
+  nav.primary a[aria-current=page]::before { content: "> "; color: var(--accent-text); white-space: pre; }
+  header .actions { margin-left: auto; display: flex; gap: var(--space-4); align-items: center; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; padding: 16px 28px 48px; }
-  .icon { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; aspect-ratio: 1; background: var(--card); border: 1px solid var(--line-soft); color: var(--text); cursor: pointer; padding: 10px; }
-  .icon:hover, .icon:focus-visible { border-color: var(--muted); outline: none; }
-  .icon[aria-selected=true] { border-color: var(--brand); }
-  .icon span { font-size: 11px; color: var(--muted); text-align: center; word-break: break-word; font-family: "IBM Plex Mono", monospace; }
-  .empty { padding: 40px 28px; color: var(--muted); }
+  /* hero */
+  .hero { padding: var(--space-7) 0 var(--space-6); display: grid; gap: var(--space-4); }
+  .hero h1 { margin: 0; font-weight: 400; font-size: var(--display-l); line-height: 1; }
+  .hero p { margin: 0; max-width: 64ch; }
+  .install { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+  .install code { font-family: var(--font-mono); font-size: 13px; text-transform: none; }
 
-  aside { position: fixed; right: 20px; bottom: 20px; width: min(400px, calc(100vw - 40px)); background: var(--panel); border: 1px solid var(--line); padding: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.4); display: none; z-index: 3; }
+  /* toolbar */
+  .toolbar { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6);
+             padding: var(--space-3) 0; background: var(--color-bg); border-bottom: 1px solid var(--line); }
+  .search { flex: 1 1 280px; display: flex; align-items: center; gap: var(--space-2); min-width: 220px; border: 1px solid var(--line); padding: 0 var(--space-3); height: 36px; background: var(--color-bg); }
+  .search:focus-within { border-color: var(--line-strong); }
+  .search input { flex: 1; min-width: 0; height: 100%; background: none; border: 0; outline: none; font-size: var(--text-ui); }
+  .search input::placeholder { color: var(--text-muted); }
+  .opts { display: inline-flex; gap: var(--space-2); align-items: center; }
+  .opt { background: none; border: 0; padding: 0; cursor: pointer; color: var(--text-muted); font-size: var(--text-ui); line-height: var(--line-body); }
+  .opt:hover { color: var(--color-fg); }
+  .opt[aria-pressed=true] { color: var(--color-fg); }
+  .opt[aria-pressed=true]::before { content: "["; } .opt[aria-pressed=true]::after { content: "]"; }
+  .swatch { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+  .swatch input { width: 18px; height: 18px; padding: 0; border: 1px solid var(--line); background: none; cursor: pointer; }
+  .count { color: var(--text-muted); margin-left: auto; }
+
+  .cats { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); padding: var(--space-4) 0 var(--space-2); }
+
+  /* grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 0; border-left: 1px solid var(--line); border-top: 1px solid var(--line); margin-top: var(--space-3); }
+  .icon { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-3); aspect-ratio: 1; padding: var(--space-3);
+          background: var(--color-bg); border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); cursor: pointer; color: var(--color-fg); position: relative; }
+  .icon:hover, .icon:focus-visible { background: var(--surface); outline: none; }
+  .icon[aria-selected=true] { background: var(--surface); }
+  .icon[aria-selected=true]::before { content: ">"; position: absolute; top: 6px; left: 8px; color: var(--accent-text); }
+  .icon span { color: var(--text-muted); font-size: var(--text-ui); line-height: 1.4; text-align: center; word-break: break-word; }
+  .icon:hover span, .icon[aria-selected=true] span { color: var(--color-fg); }
+  .empty { padding: var(--space-8) 0; color: var(--text-muted); grid-column: 1 / -1; }
+
+  /* detail panel */
+  aside { position: fixed; right: 20px; bottom: 20px; z-index: 5; width: min(420px, calc(100vw - 40px)); background: var(--surface); border: 1px solid var(--line); padding: var(--space-5); display: none; }
   aside.open { display: block; }
-  .close { position: absolute; top: 8px; right: 10px; border: 0; background: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-  .pixview { display: grid; place-items: center; padding: 14px; background: var(--bg); border: 1px solid var(--line-soft); margin-bottom: 14px; }
-  .pixview svg { width: 192px; height: 192px; }
-  aside h2 { margin: 0 0 2px; font: 600 15px/1.3 "IBM Plex Mono", monospace; }
-  aside p { margin: 0 0 12px; color: var(--muted); font-size: 12.5px; }
-  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .actions .btn { justify-content: center; }
+  .x { position: absolute; top: var(--space-2); right: var(--space-3); }
+  .pixview { display: grid; place-items: center; padding: var(--space-4); margin-bottom: var(--space-4); border: 1px solid var(--line); background: var(--color-bg); }
+  .pixview svg { width: 193px; height: 193px; padding: 0 1px 1px 0; box-sizing: border-box; outline: 1px solid var(--line); outline-offset: 0;
+                 background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 12px 12px; }
+  aside h2 { margin: 0; font-weight: 400; font-size: var(--text-title); line-height: 1.3; }
+  aside .sub { margin: var(--space-1) 0 var(--space-3); }
+  aside .tags { color: var(--text-muted); margin: 0 0 var(--space-4); }
+  .actions-row { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); }
 
   /* editor */
-  dialog { border: 1px solid var(--line); background: var(--panel); color: var(--text); padding: 0; width: min(760px, calc(100vw - 32px)); }
-  dialog::backdrop { background: rgba(0,0,0,.55); }
-  .ed { display: grid; grid-template-columns: auto 1fr; gap: 22px; padding: 22px; }
-  @media (max-width: 640px) { .ed { grid-template-columns: 1fr; } }
-  .board { display: grid; grid-template-columns: repeat(16, 22px); grid-template-rows: repeat(16, 22px); border: 1px solid var(--line); touch-action: none; user-select: none; background: var(--bg); }
-  .board div { border-right: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
-  .board div.pad { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--line) 60%, transparent) 3px 4px); }
-  .board div.m { background: var(--text); }
-  .ed h3 { margin: 0 0 12px; font: 600 15px/1.2 "IBM Plex Mono", monospace; }
-  .ed .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
-  .ed input[type=text] { height: 34px; background: var(--bg); border: 1px solid var(--line); padding: 0 10px; width: 100%; }
-  .previews { display: flex; gap: 18px; align-items: flex-end; padding: 14px; background: var(--bg); border: 1px solid var(--line-soft); margin-bottom: 12px; }
-  .previews figure { margin: 0; display: grid; gap: 6px; justify-items: center; }
-  .previews figcaption { font: 11px "IBM Plex Mono", monospace; color: var(--muted); }
-  .hint { color: var(--muted); font-size: 12.5px; margin: 0; }
-  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0; background: var(--text); color: var(--bg); padding: 8px 14px; font: 12px "IBM Plex Mono", monospace; transition: .2s; pointer-events: none; z-index: 10; }
+  dialog { border: 1px solid var(--line); background: var(--surface); color: var(--color-fg); padding: 0; width: min(780px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); }
+  dialog::backdrop { background: color-mix(in srgb, var(--color-bg) 85%, transparent); }
+  .ed { display: grid; grid-template-columns: auto 1fr; gap: var(--space-6); padding: var(--space-6); position: relative; }
+  @media (max-width: 680px) { .ed { grid-template-columns: 1fr; } }
+  .board { display: grid; grid-template-columns: repeat(16, 22px); grid-template-rows: repeat(16, 22px); border: 1px solid var(--line); touch-action: none; user-select: none; background: var(--color-bg); }
+  .board div { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .board div.pad { background: repeating-linear-gradient(45deg, transparent 0 3px, var(--line) 3px 4px); }
+  .board div.m { background: var(--color-fg); }
+  .ed h3 { margin: 0 0 var(--space-3); font-weight: 400; font-size: var(--text-title); }
+  .ed .row { display: flex; gap: var(--space-2) var(--space-5); flex-wrap: wrap; align-items: center; margin-bottom: var(--space-3); }
+  .field { width: 100%; height: 36px; background: var(--color-bg); border: 1px solid var(--line); padding: 0 var(--space-3); font-size: var(--text-ui); outline: none; }
+  .field:focus { border-color: var(--line-strong); }
+  .previews { display: flex; gap: var(--space-5); align-items: flex-end; padding: var(--space-4); border: 1px solid var(--line); background: var(--color-bg); margin-bottom: var(--space-3); }
+  .previews figure { margin: 0; display: grid; gap: var(--space-1); justify-items: center; color: var(--color-fg); }
+  .previews figcaption { color: var(--text-muted); }
+
+  footer { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); padding-top: var(--space-7); color: var(--text-muted); }
+  footer a:hover { color: var(--color-fg); }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 10; transform: translateX(-50%) translateY(16px); opacity: 0; transition: .15s steps(3);
+           background: var(--color-fg); color: var(--color-bg); padding: var(--space-2) var(--space-4); pointer-events: none; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (max-width: 760px) { header .actions { margin-left: 0; } .count { margin-left: 0; } }
 </style>
 </head>
 <body>
-<header>
-  <div class="wordmark"><b>&gt;</b>ottomind icons</div>
-  <div class="meta" id="meta"></div>
-  <div class="right">
-    <code class="btn" id="install" title="Copy">npm i @ottomind-ai/icons-react</code>
-    <button class="btn primary" id="draw">&gt; draw an icon</button>
-  </div>
-</header>
+<canvas id="dust" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <a class="brand" href="./" aria-label="ottomind icons, home">
+      <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#B3202A" d="__MARK_CHERRY__"/><path class="k" d="__MARK_MAIN__"/></svg>
+      <span>ottomind icons</span>
+    </a>
+    <nav class="primary" aria-label="primary">
+      <a href="./" aria-current="page">icons</a>
+      <a href="https://github.com/ottomind-ai/icons/blob/main/docs/GUIDELINES.md">guidelines</a>
+      <a href="https://github.com/ottomind-ai/icons">github</a>
+      <a href="https://www.npmjs.com/package/@ottomind-ai/icons-react">npm</a>
+      <a href="https://ottomind.ai">ottomind.ai</a>
+    </nav>
+    <div class="actions">
+      <button class="ui-button ui-button--primary" id="draw">draw</button>
+      <button class="ui-button" id="theme">dark</button>
+    </div>
+  </header>
 
-<div class="toolbar">
-  <input type="search" id="q" placeholder="Search icons, tags (EN / TR), categories…" autocomplete="off">
-  <span class="lbl">size</span>
-  <div class="seg" id="sizes"></div>
-  <label class="lbl">color <input type="color" id="color" value="#edebe3"></label>
+  <section class="hero">
+    <h1>icons<span class="stop">.</span></h1>
+    <p id="lede"></p>
+    <div class="install">
+      <code class="ui-prompt">npm i @ottomind-ai/icons-react</code>
+      <button class="ui-button" data-copy-install="npm i @ottomind-ai/icons-react">copy</button>
+      <span class="muted">no react? <code>@ottomind-ai/icons</code> gives svg files, a sprite and toSvg().</span>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <label class="search"><span class="ui-prompt" aria-hidden="true"></span><input type="search" id="q" placeholder="search icons — english or türkçe" autocomplete="off" aria-label="search icons"></label>
+    <span class="opts" aria-label="size"><span class="muted">size</span><span id="sizes" class="opts"></span></span>
+    <label class="swatch"><span class="muted">color</span><input type="color" id="color" value="#edebe3" aria-label="icon colour"></label>
+    <span class="count" id="count"></span>
+  </div>
+  <nav class="cats" id="chips" aria-label="categories"></nav>
+  <main><div class="grid" id="grid" role="listbox" aria-label="icons"></div></main>
+
+  <footer>
+    <span>mit © ottomind</span>
+    <a href="https://github.com/ottomind-ai/icons">github</a>
+    <a href="https://www.npmjs.com/package/@ottomind-ai/icons">npm</a>
+    <a href="https://github.com/ottomind-ai/icons/blob/main/docs/GUIDELINES.md">add an icon</a>
+    <span id="ver"></span>
+  </footer>
 </div>
-<div class="chips" id="chips"></div>
-<main><div class="grid" id="grid" role="listbox" aria-label="Icons"></div></main>
 
 <aside id="panel" aria-live="polite">
-  <button class="close" id="closePanel" aria-label="Close">×</button>
+  <button class="ui-button x" id="closePanel" aria-label="close">x</button>
   <div class="pixview" id="pPreview"></div>
   <h2 id="pName"></h2>
-  <p id="pTags"></p>
-  <div class="actions">
-    <button class="btn" data-act="svg">copy svg</button>
-    <button class="btn" data-act="jsx">copy jsx</button>
-    <button class="btn" data-act="name">copy name</button>
-    <button class="btn" data-act="download">download .svg</button>
-    <button class="btn" data-act="edit" style="grid-column: span 2">edit pixels</button>
+  <div class="sub"><code class="keep" id="pJsx"></code></div>
+  <p class="tags" id="pTags"></p>
+  <div class="actions-row">
+    <button class="ui-button" data-act="svg">copy svg</button>
+    <button class="ui-button" data-act="jsx">copy jsx</button>
+    <button class="ui-button" data-act="name">copy name</button>
+    <button class="ui-button" data-act="download">download</button>
+    <button class="ui-button ui-button--primary" data-act="edit">edit pixels</button>
   </div>
 </aside>
 
 <dialog id="editor">
   <div class="ed">
+    <button class="ui-button x" id="closeEditor" aria-label="close">x</button>
+    <div><div class="board" id="board" aria-label="16 by 16 pixel board"></div></div>
     <div>
-      <div class="board" id="board" aria-label="16 by 16 pixel board"></div>
-    </div>
-    <div>
-      <button class="close" id="closeEditor" aria-label="Close">×</button>
-      <h3>draw an icon</h3>
+      <h3>draw an icon<span class="stop">.</span></h3>
       <div class="row">
-        <div class="seg" id="tools">
-          <button data-tool="#" aria-pressed="true">draw</button>
-          <button data-tool="." aria-pressed="false">erase</button>
-        </div>
-        <button class="btn" id="clear">clear</button>
+        <span class="opts" id="tools">
+          <button class="opt" data-tool="#" aria-pressed="true">draw</button>
+          <button class="opt" data-tool="." aria-pressed="false">erase</button>
+        </span>
+        <button class="ui-button" id="clear">clear</button>
       </div>
       <div class="previews" id="edPreviews"></div>
-      <div class="row"><input type="text" id="edName" placeholder="icon-name (kebab-case)"></div>
-      <div class="row"><input type="text" id="edTags" placeholder="tags, comma separated (english, türkçe)"></div>
+      <div class="row"><input class="field" type="text" id="edName" placeholder="icon-name (kebab-case)"></div>
+      <div class="row"><input class="field" type="text" id="edTags" placeholder="tags, comma separated (english, türkçe)"></div>
       <div class="row">
-        <button class="btn primary" id="copyJson">copy icons/&lt;name&gt;.json</button>
-        <button class="btn" id="copySvgEd">copy svg</button>
+        <button class="ui-button ui-button--primary" id="copyJson">copy json</button>
+        <button class="ui-button" id="copySvgEd">copy svg</button>
       </div>
-      <p class="hint">Click or drag to paint. Right-click erases. The hatched 1px border stays empty. Paste the JSON into <code>icons/</code> and run <code>npm run check</code>.</p>
+      <p class="muted">click or drag to paint, right-click to erase. the hatched border stays empty. save the json as icons/&lt;name&gt;.json and run npm run check.</p>
     </div>
   </div>
 </dialog>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 const DATA = /*__ICON_DATA__*/null;
@@ -150,6 +242,35 @@ const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const state = { q: '', cat: null, size: 32, color: null, selected: null };
 
+// ---- theme (dark default, like ottomind.ai)
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+function applyTheme(t) {
+  if (t === 'light') document.documentElement.dataset.theme = 'light'; else delete document.documentElement.dataset.theme;
+  $('theme').textContent = t === 'light' ? 'light' : 'dark';
+  if (!state.color) $('color').value = t === 'light' ? '#0e0e0f' : '#edebe3';
+  drawDust();
+}
+$('theme').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  store.set('om-theme', next); applyTheme(next);
+});
+
+// ---- pixel dust (seeded, denser to the right, as on ottomind.ai)
+function drawDust() {
+  const c = $('dust'); const dpr = window.devicePixelRatio || 1;
+  const w = innerWidth, h = innerHeight; c.width = w * dpr; c.height = h * dpr;
+  const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+  g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--line').trim() || '#2e2e33';
+  let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const cell = 16;
+  for (let y = 0; y < h; y += cell) for (let x = 0; x < w; x += cell) {
+    const p = 0.015 + 0.09 * Math.pow(x / w, 2);
+    if (rnd() < p) g.fillRect(x + 4, y + 4, 8, 8);
+  }
+}
+addEventListener('resize', () => { clearTimeout(drawDust.t); drawDust.t = setTimeout(drawDust, 120); });
+
+// ---- rendering
 function svgFromNodes(nodes, { size = 16, color = 'currentColor', attrs = '' } = {}) {
   const kids = nodes.map(([tag, a]) => `<${tag} ${Object.entries(a).map(([k, v]) => `${k}="${esc(v)}"`).join(' ')}/>`).join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${G} ${G}" fill="${esc(color)}" shape-rendering="crispEdges"${attrs}>${kids}</svg>`;
@@ -168,7 +289,6 @@ function rectsPath(px, ch) {
 const nodesFromPixels = (px) => [['path', { d: rectsPath(px, '#') }]];
 const opts = (extra = {}) => ({ size: state.size, color: state.color || 'currentColor', ...extra });
 
-// ---- browse
 function matches(icon) {
   if (state.cat && !icon.categories.includes(state.cat)) return false;
   if (!state.q) return true;
@@ -177,31 +297,33 @@ function matches(icon) {
 }
 function render() {
   const list = DATA.icons.filter(matches);
+  $('count').textContent = `${list.length} / ${DATA.icons.length}`;
   $('grid').innerHTML = list.length
     ? list.map((i) => `<button class="icon" role="option" data-name="${i.name}" aria-selected="${state.selected === i.name}" title="${i.name}">${svgFromNodes(i.nodes, { ...opts(), attrs: ' aria-hidden="true"' })}<span>${i.name}</span></button>`).join('')
-    : '<div class="empty">No icon matches. Draw it and open a pull request.</div>';
+    : '<div class="empty">no icon matches. draw it and open a pull request.</div>';
   if (state.selected) showPanel(state.selected);
-}
-function showPanel(name) {
-  const icon = DATA.icons.find((i) => i.name === name); if (!icon) return;
-  state.selected = name;
-  $('pPreview').innerHTML = svgFromNodes(icon.nodes, opts({ size: 192 }));
-  $('pName').textContent = `${icon.name}  ·  <${icon.pascal} />`;
-  $('pTags').textContent = [icon.categories.join(', '), icon.tags.join(', '), icon.aliases.length ? `aliases: ${icon.aliases.join(', ')}` : ''].filter(Boolean).join('  —  ');
-  $('panel').classList.add('open');
 }
 function jsx(icon) {
   const p = [];
   if (state.size !== 16) p.push(`size={${state.size}}`);
   if (state.color) p.push(`color="${state.color}"`);
-  return `import { ${icon.pascal} } from '@ottomind-ai/icons-react';\n\n<${icon.pascal}${p.length ? ' ' + p.join(' ') : ''} />`;
+  return `<${icon.pascal}${p.length ? ' ' + p.join(' ') : ''} />`;
+}
+function showPanel(name) {
+  const icon = DATA.icons.find((i) => i.name === name); if (!icon) return;
+  state.selected = name;
+  $('pPreview').innerHTML = svgFromNodes(icon.nodes, opts({ size: 192 }));
+  $('pName').textContent = icon.name;
+  $('pJsx').textContent = jsx(icon);
+  $('pTags').textContent = [icon.categories.map((c) => `${c} / ${DATA.categoriesTr[c] || c}`).join(', '), icon.tags.join(', '), icon.aliases.length ? `aliases: ${icon.aliases.join(', ')}` : ''].filter(Boolean).join(' — ');
+  $('panel').classList.add('open');
 }
 
 let toastTimer;
 function toast(msg) { $('toast').textContent = msg; $('toast').classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('show'), 1400); }
 async function copy(text, label) {
   try { await navigator.clipboard.writeText(text); toast(`${label} copied`); }
-  catch { toast('copy failed — the browser blocked the clipboard'); }
+  catch { toast('copy failed: the browser blocked the clipboard'); }
 }
 function download(name, svg) {
   const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
@@ -209,18 +331,18 @@ function download(name, svg) {
   URL.revokeObjectURL(url);
 }
 
-// Embedded previews (sandboxed frames) cannot start downloads: offer copy only there.
-if (window.self !== window.top) document.querySelector('[data-act="download"]').remove();
-$('meta').textContent = `v${DATA.version} · ${DATA.icons.length} icons · ${G}×${G} · MIT`;
-$('sizes').innerHTML = [16, 32, 48, 64].map((s) => `<button data-size="${s}" aria-pressed="${s === state.size}">${s}</button>`).join('');
+// ---- wiring
+$('lede').textContent = `${DATA.icons.length} one-colour pixel icons on a ${G}×${G} grid. drawn for ottomind products, free for everyone. react, svg, sprite and iconify. mit.`;
+$('ver').textContent = `v${DATA.version}`;
+$('sizes').innerHTML = [16, 32, 48, 64].map((s) => `<button class="opt" data-size="${s}" aria-pressed="${s === state.size}">${s}</button>`).join('');
 $('sizes').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
   state.size = +b.dataset.size; for (const c of $('sizes').children) c.setAttribute('aria-pressed', c === b); render();
 });
 const usedCats = DATA.categories.filter((c) => DATA.icons.some((i) => i.categories.includes(c)));
-$('chips').innerHTML = ['all', ...usedCats].map((c) => `<button class="chip" data-cat="${c}" aria-pressed="${c === 'all'}">${c}</button>`).join('');
+$('chips').innerHTML = ['all', ...usedCats].map((c) => `<button class="opt" data-cat="${c}" aria-pressed="${c === 'all'}">${c}</button>`).join('');
 $('chips').addEventListener('click', (e) => {
-  const b = e.target.closest('.chip'); if (!b) return;
+  const b = e.target.closest('button'); if (!b) return;
   state.cat = b.dataset.cat === 'all' ? null : b.dataset.cat;
   for (const c of $('chips').children) c.setAttribute('aria-pressed', c === b); render();
 });
@@ -228,13 +350,18 @@ $('q').addEventListener('input', (e) => { state.q = e.target.value.trim().toLoca
 $('color').addEventListener('input', (e) => { state.color = e.target.value; render(); });
 $('grid').addEventListener('click', (e) => { const b = e.target.closest('.icon'); if (b) { state.selected = b.dataset.name; render(); } });
 $('closePanel').addEventListener('click', () => { state.selected = null; $('panel').classList.remove('open'); render(); });
-$('install').addEventListener('click', () => copy($('install').textContent, 'install command'));
+document.querySelector('[data-copy-install]').addEventListener('click', (e) => copy(e.currentTarget.dataset.copyInstall, 'install command'));
+// sandboxed previews cannot start downloads: offer copy only there
+if (window.self !== window.top) document.querySelector('[data-act="download"]').remove();
 $('panel').addEventListener('click', (e) => {
   const b = e.target.closest('[data-act]'); if (!b) return;
   const icon = DATA.icons.find((i) => i.name === state.selected);
   const svg = svgFromNodes(icon.nodes, { size: state.size, color: state.color || 'currentColor' });
-  ({ svg: () => copy(svg, 'SVG'), jsx: () => copy(jsx(icon), 'JSX'), name: () => copy(icon.name, 'name'),
-     download: () => download(icon.name, svg), edit: () => openEditor(icon) })[b.dataset.act]();
+  ({ svg: () => copy(svg, 'svg'),
+     jsx: () => copy(`import { ${icon.pascal} } from '@ottomind-ai/icons-react';\n\n${jsx(icon)}`, 'jsx'),
+     name: () => copy(icon.name, 'name'),
+     download: () => download(icon.name, svg),
+     edit: () => openEditor(icon) })[b.dataset.act]();
 });
 
 // ---- editor
@@ -249,17 +376,10 @@ board.innerHTML = Array.from({ length: G * G }, (_, i) => {
 function paintCell(cell, ch) {
   const x = +cell.dataset.x, y = +cell.dataset.y;
   if (cell.classList.contains('pad') && ch !== '.') return;
-  px[y][x] = ch; cell.classList.toggle('m', ch === '#');
-  edPreview();
+  px[y][x] = ch; cell.classList.toggle('m', ch === '#'); edPreview();
 }
-function loadBoard() {
-  for (const cell of board.children) {
-    const ch = px[+cell.dataset.y][+cell.dataset.x];
-    cell.classList.toggle('m', ch === '#');
-  }
-  edPreview();
-}
-function rowsOf() { return px.map((r) => r.join('')); }
+function loadBoard() { for (const cell of board.children) cell.classList.toggle('m', px[+cell.dataset.y][+cell.dataset.x] === '#'); edPreview(); }
+const rowsOf = () => px.map((r) => r.join(''));
 function edPreview() {
   const nodes = nodesFromPixels(rowsOf());
   $('edPreviews').innerHTML = [16, 32, 64].map((s) => `<figure>${svgFromNodes(nodes, { size: s })}<figcaption>${s}</figcaption></figure>`).join('');
@@ -295,12 +415,14 @@ $('copyJson').addEventListener('click', () => {
   const json = `{\n  "tags": ${JSON.stringify(tags.length ? tags : [name.replace(/-/g, ' ')])},\n  "categories": ${JSON.stringify(icon ? icon.categories : ['actions'])},\n  "pixels": [\n${rowsOf().map((r) => `    "${r}"`).join(',\n')}\n  ]\n}\n`;
   copy(json, `icons/${name}.json`);
 });
-$('copySvgEd').addEventListener('click', () => copy(svgFromNodes(nodesFromPixels(rowsOf()), { size: 16 }), 'SVG'));
+$('copySvgEd').addEventListener('click', () => copy(svgFromNodes(nodesFromPixels(rowsOf()), { size: 16 }), 'svg'));
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); $('q').focus(); }
+  if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) { e.preventDefault(); $('q').focus(); }
   if (e.key === 'Escape' && !$('editor').open) $('closePanel').click();
 });
+
+applyTheme(store.get('om-theme') === 'light' ? 'light' : 'dark');
 render();
 </script>
 </body>

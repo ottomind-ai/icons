@@ -53,7 +53,8 @@ jobs:
 
   site:
     needs: release
-    if: needs.release.outputs.hasChangesets == 'false' || github.event_name == 'workflow_dispatch'
+    # always(): an npm problem should not hold back the site
+    if: always() && (needs.release.outputs.hasChangesets == 'false' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       contents: read
