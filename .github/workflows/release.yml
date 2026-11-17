@@ -31,7 +31,8 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24 # npm >= 11.5.1 is required for trusted publishing
-          registry-url: https://registry.npmjs.org
+          # no registry-url: it makes setup-node write a placeholder auth token,
+          # which npm can pick up instead of the OIDC (trusted publishing) token
       - run: npm install -g npm@latest # the npm bundled with Node can lag behind trusted publishing
       - run: npm ci
       - id: npm
