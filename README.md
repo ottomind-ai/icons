@@ -93,15 +93,19 @@ docs/GUIDELINES.md     design rules
 
 ## Release
 
-Changesets + GitHub Actions + npm trusted publishing (no npm token stored anywhere).
-Merge PRs with changesets → a "Version Packages" PR opens → merging it publishes both packages to npm.
-For the bot to open that PR, enable Settings → Actions → General → "Allow GitHub Actions to create and
+Changesets + GitHub Actions + npm trusted publishing (no npm token stored anywhere) + npm staged publishing.
+Merge PRs with changesets → a "Version Packages" PR opens → merging it stages both packages on npm
+(`scripts/stage.mjs`, which runs `npm stage publish` for every version not on npm yet). Nothing is
+installable until a maintainer approves it with 2FA: npmjs.com → account settings → Staged Packages,
+or `npm stage list` then `npm stage approve <id>`. Approve before pushing to `main` again, or the next
+run tries to stage the same version and fails.
+For the bot to open the version PR, enable Settings → Actions → General → "Allow GitHub Actions to create and
 approve pull requests" (on the organisation too, if it is locked there).
 
 One-time setup: create the `ottomind-ai` org on npmjs.com, publish the first version of both packages by
 hand (`npm login`, then `npm run build && npm publish -w packages/icons -w packages/react`), then on each
 package's npmjs.com settings add a trusted publisher: GitHub Actions, `ottomind-ai/icons`, workflow
-`release.yml`, with direct `npm publish` allowed.
+`release.yml`, no environment, "Allow npm publish" and "Allow npm dist-tag" left unchecked (stage only).
 
 The site (icons.ottomind.ai) is deployed to GitHub Pages by the same workflow whenever `main` has no
 pending changesets, so it always matches what is installable. Repo Settings → Pages → Source: "GitHub Actions",

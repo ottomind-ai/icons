@@ -15,7 +15,7 @@
     "new": "node scripts/new-icon.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "npm run check && changeset publish"
+    "release": "npm run check && node scripts/stage.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",

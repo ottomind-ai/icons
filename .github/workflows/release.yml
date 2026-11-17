@@ -1,13 +1,13 @@
 name: Release
 
 # On main: opens a "Version Packages" PR from pending changesets;
-# merging that PR publishes both packages to npm.
-# The site (GitHub Pages) deploys whenever main has no pending changesets,
-# i.e. whenever main matches what is published on npm.
+# merging that PR stages both packages on npm (`npm stage publish`).
+# A staged version goes live only after a maintainer approves it with 2FA
+# (npmjs.com → account settings → Staged Packages, or `npm stage approve <id>`).
+# The site (GitHub Pages) deploys whenever main has no pending changesets.
 #
-# npm auth: trusted publishing (OIDC). No npm token is stored in GitHub.
-# The very first version is published by hand (npm needs the packages to exist before a
-# trusted publisher can be added); until then this workflow skips publishing.
+# npm auth: trusted publishing (OIDC), stage-only. No npm token is stored in GitHub,
+# and a direct `npm publish` from this workflow is rejected by npm.
 on:
   push:
     branches: [main]
@@ -30,25 +30,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v6
         with:
-          node-version: 24 # npm >= 11.5.1 is required for trusted publishing
+          node-version: 24 # staged publishing needs Node >= 22.14 and npm >= 11.15
           # no registry-url: it makes setup-node write a placeholder auth token,
           # which npm can pick up instead of the OIDC (trusted publishing) token
-      - run: npm install -g npm@latest # the npm bundled with Node can lag behind trusted publishing
+      - run: npm install -g npm@latest # the npm bundled with Node can lag behind staged publishing
       - run: npm ci
-      - id: npm
-        name: Are the packages on npm yet?
-        run: |
-          if npm view @ottomind-ai/icons version >/dev/null 2>&1; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::@ottomind-ai/icons is not on npm yet: publish the first version by hand, then add trusted publishers."
-          fi
       - id: changesets
         uses: changesets/action@v1
         with:
           version: npm run version-packages
-          publish: ${{ steps.npm.outputs.exists == 'true' && 'npm run release' || '' }}
+          publish: npm run release # scripts/stage.mjs: stages versions not yet on npm
+          createGithubReleases: false # a staged version is not released until it is approved
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
