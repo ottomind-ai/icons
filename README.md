@@ -95,6 +95,8 @@ docs/GUIDELINES.md     design rules
 
 Changesets + GitHub Actions + npm trusted publishing (no npm token stored anywhere).
 Merge PRs with changesets → a "Version Packages" PR opens → merging it publishes both packages to npm.
+For the bot to open that PR, enable Settings → Actions → General → "Allow GitHub Actions to create and
+approve pull requests" (on the organisation too, if it is locked there).
 
 One-time setup: create the `ottomind-ai` org on npmjs.com, publish the first version of both packages by
 hand (`npm login`, then `npm run build && npm publish -w packages/icons -w packages/react`), then on each

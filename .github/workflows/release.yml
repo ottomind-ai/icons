@@ -32,6 +32,7 @@ jobs:
         with:
           node-version: 24 # npm >= 11.5.1 is required for trusted publishing
           registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest # the npm bundled with Node can lag behind trusted publishing
       - run: npm ci
       - id: npm
         name: Are the packages on npm yet?
