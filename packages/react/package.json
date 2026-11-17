@@ -1,0 +1,46 @@
+{
+  "name": "@ottomind-ai/icons-react",
+  "version": "0.1.0",
+  "description": "ottomind icon set — tree-shakable React components",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./icons/*": {
+      "types": "./dist/icons/*.d.ts",
+      "import": "./dist/icons/*.js",
+      "default": "./dist/icons/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "keywords": [
+    "icons",
+    "react",
+    "svg",
+    "ottomind",
+    "icon-set"
+  ],
+  "homepage": "https://icons.ottomind.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ottomind-ai/icons.git",
+    "directory": "packages/react"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

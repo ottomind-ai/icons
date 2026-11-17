@@ -1,0 +1,42 @@
+{
+  "name": "@ottomind-ai/icons",
+  "version": "0.1.0",
+  "description": "ottomind icon set — framework-agnostic icon data, SVG files, sprite and Iconify JSON",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./svg/*": "./dist/svg/*",
+    "./sprite.svg": "./dist/sprite.svg",
+    "./iconify.json": "./dist/iconify.json",
+    "./metadata.json": "./dist/metadata.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "icons",
+    "svg",
+    "ottomind",
+    "icon-set",
+    "iconify"
+  ],
+  "homepage": "https://icons.ottomind.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ottomind-ai/icons.git",
+    "directory": "packages/icons"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

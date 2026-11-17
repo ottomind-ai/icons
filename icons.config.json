@@ -1,0 +1,44 @@
+{
+  "$comment": "Design constants of the set. Changing grid or padding means redrawing icons.",
+  "grid": 16,
+  "padding": 1,
+  "pixels": {
+    ".": "empty",
+    "#": "filled (icon colour)"
+  },
+  "sizes": [16, 32, 48, 64],
+  "spritePrefix": "om-",
+  "iconifyPrefix": "ottomind",
+  "categoriesTr": {
+    "arrows": "oklar",
+    "actions": "eylemler",
+    "navigation": "gezinme",
+    "status": "durum",
+    "files": "dosyalar",
+    "documents": "belgeler",
+    "communication": "iletişim",
+    "media": "medya",
+    "people": "kişiler",
+    "ai": "yapay zeka",
+    "development": "geliştirme",
+    "games": "oyun",
+    "commerce": "ticaret",
+    "brand": "marka"
+  },
+  "categories": [
+    "arrows",
+    "actions",
+    "navigation",
+    "status",
+    "files",
+    "documents",
+    "communication",
+    "media",
+    "people",
+    "ai",
+    "development",
+    "games",
+    "commerce",
+    "brand"
+  ]
+}

@@ -1,0 +1,76 @@
+name: Release
+
+# On main: opens a "Version Packages" PR from pending changesets;
+# merging that PR publishes both packages to npm.
+# The site (GitHub Pages) deploys whenever main has no pending changesets,
+# i.e. whenever main matches what is published on npm.
+#
+# npm auth: trusted publishing (OIDC). No npm token is stored in GitHub.
+# The very first version is published by hand (npm needs the packages to exist before a
+# trusted publisher can be added); until then this workflow skips publishing.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # run by hand to redeploy the site
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write # OIDC token for npm trusted publishing
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24 # npm >= 11.5.1 is required for trusted publishing
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - id: npm
+        name: Are the packages on npm yet?
+        run: |
+          if npm view @ottomind-ai/icons version >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::@ottomind-ai/icons is not on npm yet: publish the first version by hand, then add trusted publishers."
+          fi
+      - id: changesets
+        uses: changesets/action@v1
+        with:
+          version: npm run version-packages
+          publish: ${{ steps.npm.outputs.exists == 'true' && 'npm run release' || '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  site:
+    needs: release
+    if: needs.release.outputs.hasChangesets == 'false' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+      - id: deploy
+        uses: actions/deploy-pages@v4
