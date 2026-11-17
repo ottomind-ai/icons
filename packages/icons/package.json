@@ -1,6 +1,6 @@
 {
   "name": "@ottomind-ai/icons",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "ottomind icon set — framework-agnostic icon data, SVG files, sprite and Iconify JSON",
   "license": "MIT",
   "type": "module",

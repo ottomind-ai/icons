@@ -105,7 +105,19 @@
   .icon[aria-selected=true]::before { content: ">"; position: absolute; top: 6px; left: 8px; color: var(--accent-text); }
   .icon span { color: var(--text-muted); font-size: var(--text-ui); line-height: 1.4; text-align: center; word-break: break-word; }
   .icon:hover span, .icon[aria-selected=true] span { color: var(--color-fg); }
-  .empty { padding: var(--space-8) 0; color: var(--text-muted); grid-column: 1 / -1; }
+  .grid[hidden] { display: none; }
+  .empty { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-6); align-items: center; margin-top: var(--space-3);
+           padding: var(--space-7) var(--space-6); border: 1px solid var(--line); background: var(--color-bg); }
+  .empty[hidden] { display: none; }
+  .empty .glyph { grid-row: span 3; color: var(--text-muted); }
+  .empty .glyph svg { display: block; width: 64px; height: 64px; }
+  .empty h2 { margin: 0; font-weight: 400; font-size: var(--text-title); line-height: 1.3; }
+  .empty p { margin: 0; color: var(--text-muted); }
+  .empty .row { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); }
+  @media (max-width: 560px) { .empty { grid-template-columns: 1fr; } .empty .glyph { grid-row: auto; } }
+  .search input::-webkit-search-cancel-button { display: none; }
+  .search .clear { padding: 0; }
+  .search .clear[hidden] { display: none; }
 
   /* detail panel */
   aside { position: fixed; right: 20px; bottom: 20px; z-index: 5; width: min(420px, calc(100vw - 40px)); background: var(--surface); border: 1px solid var(--line); padding: var(--space-5); display: none; }
@@ -177,13 +189,24 @@
   </section>
 
   <div class="toolbar">
-    <label class="search"><span class="ui-prompt" aria-hidden="true"></span><input type="search" id="q" placeholder="search icons — english or türkçe" autocomplete="off" aria-label="search icons"></label>
+    <label class="search"><span class="ui-prompt" aria-hidden="true"></span><input type="search" id="q" placeholder="search icons — english or türkçe" autocomplete="off" aria-label="search icons"><button class="ui-button clear" id="clearQ" type="button" hidden>clear</button></label>
     <span class="opts" aria-label="size"><span class="muted">size</span><span id="sizes" class="opts"></span></span>
     <label class="swatch"><span class="muted">color</span><input type="color" id="color" value="#edebe3" aria-label="icon colour"></label>
     <span class="count" id="count"></span>
   </div>
   <nav class="cats" id="chips" aria-label="categories"></nav>
-  <main><div class="grid" id="grid" role="listbox" aria-label="icons"></div></main>
+  <main>
+    <div class="grid" id="grid" role="listbox" aria-label="icons"></div>
+    <div class="empty" id="empty" hidden>
+      <div class="glyph" id="emptyGlyph"></div>
+      <h2 id="emptyTitle"></h2>
+      <p>search looks at names and english / turkish tags. try another word, or draw the icon and open a pull request.</p>
+      <div class="row">
+        <button class="ui-button" id="emptyClear">clear search</button>
+        <button class="ui-button ui-button--primary" id="emptyDraw">draw it</button>
+      </div>
+    </div>
+  </main>
 
   <footer>
     <span>mit © ottomind</span>
@@ -407,9 +430,14 @@ function matches(icon) {
 function render() {
   const list = DATA.icons.filter(matches);
   $('count').textContent = `${list.length} / ${DATA.icons.length}`;
-  $('grid').innerHTML = list.length
-    ? list.map((i) => `<button class="icon" role="option" data-name="${i.name}" aria-selected="${state.selected === i.name}" title="${i.name}">${svgFromNodes(i.nodes, { ...opts(), attrs: ' aria-hidden="true"' })}<span>${i.name}</span></button>`).join('')
-    : '<div class="empty">no icon matches. draw it and open a pull request.</div>';
+  $('clearQ').hidden = !state.q;
+  $('grid').hidden = !list.length;
+  $('empty').hidden = !!list.length;
+  $('grid').innerHTML = list.map((i) => `<button class="icon" role="option" data-name="${i.name}" aria-selected="${state.selected === i.name}" title="${i.name}">${svgFromNodes(i.nodes, { ...opts(), attrs: ' aria-hidden="true"' })}<span>${i.name}</span></button>`).join('');
+  if (!list.length) {
+    const what = state.q ? `"${state.q}"` : 'this filter';
+    $('emptyTitle').innerHTML = `no icon for ${esc(what)} yet<span class="stop">.</span>`;
+  }
   if (state.selected) showPanel(state.selected);
 }
 function jsx(icon) {
@@ -456,6 +484,12 @@ $('chips').addEventListener('click', (e) => {
   for (const c of $('chips').children) c.setAttribute('aria-pressed', c === b); render();
 });
 $('q').addEventListener('input', (e) => { state.q = e.target.value.trim().toLocaleLowerCase('tr'); render(); });
+function clearSearch() { $('q').value = ''; state.q = ''; render(); $('q').focus(); }
+$('clearQ').addEventListener('click', clearSearch);
+$('emptyClear').addEventListener('click', clearSearch);
+const slug = (v) => v.replace(/[çğıöşü]/g, (ch) => ({ ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: 's', ü: 'u' })[ch]).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+$('emptyDraw').addEventListener('click', () => { openEditor(null); $('edName').value = slug(state.q); });
+{ const s = DATA.icons.find((i) => i.name === 'search'); if (s) $('emptyGlyph').innerHTML = svgFromNodes(s.nodes, { size: 64 }); }
 $('color').addEventListener('input', (e) => { state.color = e.target.value; render(); });
 $('grid').addEventListener('click', (e) => { const b = e.target.closest('.icon'); if (b) { state.selected = b.dataset.name; render(); } });
 $('closePanel').addEventListener('click', () => { state.selected = null; $('panel').classList.remove('open'); render(); });

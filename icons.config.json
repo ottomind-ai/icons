@@ -22,8 +22,7 @@
     "ai": "yapay zeka",
     "development": "geliştirme",
     "games": "oyun",
-    "commerce": "ticaret",
-    "brand": "marka"
+    "commerce": "ticaret"
   },
   "categories": [
     "arrows",
@@ -38,7 +37,6 @@
     "ai",
     "development",
     "games",
-    "commerce",
-    "brand"
+    "commerce"
   ]
 }

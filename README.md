@@ -2,7 +2,7 @@
 
 <p align="center">Open-source one-colour 16 × 16 pixel icons in the ottomind style.<br>React components, plain SVG, sprite and Iconify.</p>
 
-104 icons: interface basics, documents, AI and development, games, media and commerce, with English
+152 icons: interface basics, documents, AI and development, games, media and commerce, with English
 and Turkish tags. Drawn as text bitmaps, so anyone can add one — see [the guidelines](docs/GUIDELINES.md).
 
 ## Packages
