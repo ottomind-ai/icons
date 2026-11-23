@@ -1,5 +1,11 @@
 # @ottomind-ai/icons
 
+## 0.3.0
+
+### Minor Changes
+
+- 503f75c: 2 new icons: shelf, pen-tool. ottomind hub uses them for its asset shelves and the corpus "design" kind.
+
 ## 0.2.0
 
 ### Minor Changes
