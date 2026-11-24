@@ -1,5 +1,11 @@
 # @ottomind-ai/icons-react
 
+## 0.3.1
+
+### Patch Changes
+
+- 75f8030: React types work under `moduleResolution: NodeNext`/`Node16`: the relative imports in the `.d.ts` files name their `.js` file. Before, TypeScript could not follow them there, so every icon was typed `any` and `OttomindIcon`/`IconProps` were missing (crazigo's panel builds this way).
+
 ## 0.3.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@ottomind-ai/icons-react",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "ottomind icon set — tree-shakable React components",
   "license": "MIT",
   "type": "module",
