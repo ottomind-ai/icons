@@ -133,8 +133,12 @@ test('tree-shaking: importing one icon ships one icon', async () => {
   console.log(`    react bundle for one icon: ${reactOut.length} bytes (minified, react external)`);
 });
 
-test('types: a TSX consumer compiles', () => {
-  execFileSync(process.execPath, [join(ROOT, 'node_modules/typescript/bin/tsc'), '-p', join(ROOT, 'tests/tsconfig.json')], {
-    stdio: 'pipe',
+// Bundler resolution (Vite, esbuild) and NodeNext (tsc for Node ESM), where relative imports in the
+// .d.ts files must name their .js file or every icon quietly turns into `any`.
+for (const config of ['tsconfig.json', 'tsconfig.nodenext.json']) {
+  test(`types: a TSX consumer compiles (${config})`, () => {
+    execFileSync(process.execPath, [join(ROOT, 'node_modules/typescript/bin/tsc'), '-p', join(ROOT, 'tests', config)], {
+      stdio: 'pipe',
+    });
   });
-});
+}

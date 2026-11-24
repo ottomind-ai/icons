@@ -140,7 +140,7 @@ copyFileSync(join(REACT_PKG, 'src/create-icon.js'), join(reactDist, 'create-icon
 copyFileSync(join(REACT_PKG, 'src/types.d.ts'), join(reactDist, 'types.d.ts'));
 
 let reactIndex = `${HEADER}export { createIcon } from './create-icon.js';\n`;
-let reactDts = `${HEADER}export * from './types';\n/** Every icon name, aliases included. */\nexport type IconName = ${nameUnion(allNames)};\n`;
+let reactDts = `${HEADER}export * from './types.js';\n/** Every icon name, aliases included. */\nexport type IconName = ${nameUnion(allNames)};\n`;
 for (const icon of icons) {
   write(
     join(reactDist, 'icons', `${icon.name}.js`),
@@ -150,14 +150,14 @@ for (const icon of icons) {
   );
   write(
     join(reactDist, 'icons', `${icon.name}.d.ts`),
-    `${HEADER}import type { OttomindIcon } from '../types';\n\n` +
+    `${HEADER}import type { OttomindIcon } from '../types.js';\n\n` +
       `/** ${icon.name} — ${icon.tags.join(', ')} */\ndeclare const ${icon.pascal}: OttomindIcon;\n` +
       `export default ${icon.pascal};\nexport { ${icon.pascal}, ${icon.pascal} as ${icon.pascal}Icon };\n`,
   );
   const exportNames = [icon.pascal, ...icon.aliases.map(toPascal)].flatMap((n) => [n, `${n}Icon`]);
   const list = exportNames.map((n) => `default as ${n}`).join(', ');
   reactIndex += `export { ${list} } from './icons/${icon.name}.js';\n`;
-  reactDts += `export { ${list} } from './icons/${icon.name}';\n`;
+  reactDts += `export { ${list} } from './icons/${icon.name}.js';\n`;
 }
 write(join(reactDist, 'index.js'), reactIndex);
 write(join(reactDist, 'index.d.ts'), reactDts);

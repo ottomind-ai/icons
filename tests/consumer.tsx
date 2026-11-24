@@ -16,6 +16,8 @@ export function Example(props: IconProps) {
       <BellIcon color="#b3202a" title="Notifications" />
       <Sparkle {...props} />
       <Custom />
+      {/* @ts-expect-error a typed icon, not `any`: size is a number or a string */}
+      <Sparkle size={{}} />
     </div>
   );
 }
